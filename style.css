@@ -284,6 +284,7 @@ body, html {
     justify-content: center;
     align-items: center;
     pointer-events: none;
+    overflow: hidden; /* Guarantee no horizontal overflow scrollbar on mobile! */
 }
 
 /* Glassmorphism Text Cards / Overlays */
@@ -1308,4 +1309,118 @@ body, html {
     text-transform: uppercase;
     margin-top: 2px;
     letter-spacing: 1px;
+}
+
+/* Mobile Responsiveness Media Queries */
+@media (max-width: 767px) {
+    /* Brand Logo / Intro Title mobile scaling */
+    .brand-logo {
+        font-size: 2.8rem !important;
+        letter-spacing: 6px !important;
+    }
+    .brand-subtitle {
+        font-size: 0.95rem !important;
+        letter-spacing: 2px !important;
+    }
+    .brand-description {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Countdown Timer boxes mobile scaling */
+    .timer-box {
+        min-width: 55px !important;
+        padding: 0.5rem 0.8rem !important;
+    }
+    .timer-box span {
+        font-size: 1.3rem !important;
+    }
+    
+    /* Proceed Button mobile scaling */
+    .btn-proceed-oji {
+        padding: 0.8rem 2rem !important;
+        font-size: 0.85rem !important;
+        letter-spacing: 1px !important;
+    }
+    
+    /* Story Cards mobile adjustments */
+    .story-card {
+        padding: 1.5rem !important;
+        left: 5% !important;
+        right: 5% !important;
+        bottom: 8% !important;
+        max-width: 100% !important;
+    }
+    .story-title {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    .story-text {
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* iPhone Wishes Card mobile scaling */
+    .iphone-glass-card {
+        padding: 2rem 1.2rem 1.8rem 1.2rem !important;
+        width: 92% !important;
+        border-radius: 28px !important;
+    }
+    .wish-header {
+        font-size: 1.6rem !important;
+        letter-spacing: 1px !important;
+    }
+    .wish-message {
+        font-size: 0.88rem !important;
+        line-height: 1.6 !important;
+    }
+    .wish-avatar-container {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    
+    /* Dancing Cats mobile scaling to fit within screen boundaries */
+    .dancing-cat-side {
+        font-size: 3.8px !important; /* Scale down visual elements */
+        width: 120px !important;
+        height: 100px !important;
+        bottom: 5% !important;
+    }
+    .dancing-cat-side.left {
+        left: -10px !important;
+    }
+    .dancing-cat-side.right {
+        right: -10px !important;
+    }
+    
+    /* Audio controller widget mobile fit */
+    .audio-widget {
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 0.8rem !important;
+    }
+    .vinyl-disc {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    .audio-track-name {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Spotify Synced Lyrics Drawer mobile adjustment */
+    .spotify-lyrics-panel {
+        width: 280px !important;
+        right: -280px !important;
+        height: 65vh !important;
+        border-radius: 16px 0 0 16px !important;
+    }
+    .spotify-lyrics-panel.open {
+        right: 0 !important;
+    }
+    .lyric-line {
+        font-size: 0.85rem !important;
+        padding: 0.6rem 0 !important;
+    }
+    .lyric-line.active {
+        font-size: 1.05rem !important;
+    }
 }
