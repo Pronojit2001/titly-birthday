@@ -483,6 +483,7 @@ function initBirthdayApp() {
     let lastProgrammaticScrollTime = 0;
     let lastUserScrollTime = 0;
     let isUserScrolling = false;
+    let isTouching = false; // Flag to track actual touch state on mobile
     let userScrollTimeout = null;
 
     function setUserActiveScroll() {
@@ -492,13 +493,29 @@ function initBirthdayApp() {
         if (userScrollTimeout) clearTimeout(userScrollTimeout);
         userScrollTimeout = setTimeout(() => {
             isUserScrolling = false;
-        }, 1800); // 1.8 seconds of no interaction resets user scroll flag
+        }, 2500); // 2.5 seconds of no interaction resets user scroll flag (covers momentum scroll)
     }
 
     // Capture manual user interactions
     window.addEventListener('wheel', setUserActiveScroll, { passive: true });
     window.addEventListener('touchmove', setUserActiveScroll, { passive: true });
-    window.addEventListener('mousedown', setUserActiveScroll, { passive: true });
+    window.addEventListener('mousedown', (e) => {
+        // Prevent click/taps from locking scroll forever on mobile by ignoring touch-initiated mouse events
+        if (e.pointerType === 'touch' || e.pointerType === 'pen') return;
+        setUserActiveScroll();
+    }, { passive: true });
+    
+    // Explicit touch tracking to prevent auto-scrolling while user is touching screen
+    window.addEventListener('touchstart', () => {
+        isTouching = true;
+        isUserScrolling = true;
+    }, { passive: true });
+    
+    window.addEventListener('touchend', () => {
+        isTouching = false;
+        setUserActiveScroll(); // Resets userScrollTimeout to release lock 2.5s after touch ends
+    }, { passive: true });
+
     window.addEventListener('keydown', (e) => {
         const keys = [32, 33, 34, 35, 36, 37, 38, 39, 40];
         if (keys.includes(e.keyCode)) {
@@ -1002,8 +1019,8 @@ function initBirthdayApp() {
         function updateSmoothAutoScroll() {
             if (!isPlaying) return;
             
-            // If user scrolled manually recently, wait 1.8 seconds before resuming auto-scroll
-            if (Date.now() - lastUserScrollTime < 1800) return;
+            // If user is currently touching or scrolled manually recently (2.5s for momentum), wait before auto-scrolling
+            if (isTouching || (Date.now() - lastUserScrollTime < 2500)) return;
             
             let duration = 0;
             let currentTime = 0;
