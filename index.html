@@ -13,7 +13,7 @@
     <audio id="local-audio" src="music.mp3" preload="auto" loop></audio>
 
     <!-- Invisible YouTube Player Embed for Background Music (Fallback) -->
-    <div id="youtube-player" style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"></div>
+    <div id="youtube-player" style="position: fixed; bottom: 1px; left: 1px; width: 1px; height: 1px; z-index: -10; overflow: hidden; pointer-events: none;"></div>
 
     <!-- Floating Audio Control Panel (Visible after entering memory lane) -->
     <div id="music-toggle-fixed" class="music-toggle-fixed" title="Mute/Unmute Music">
