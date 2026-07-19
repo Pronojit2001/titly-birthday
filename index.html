@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Titly!</title>
+    <!-- CSS stylesheet link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HTML5 Audio Element for Local Custom Music (Drop music.mp3 in root to use) -->
+    <audio id="local-audio" src="music.mp3" preload="auto" loop></audio>
+
+    <!-- Invisible YouTube Player Embed for Background Music (Fallback) -->
+    <div id="youtube-player" style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"></div>
+
+    <!-- Floating Audio Control Panel (Visible after entering memory lane) -->
+    <div id="music-toggle-fixed" class="music-toggle-fixed" title="Mute/Unmute Music">
+        <svg viewBox="0 0 24 24" id="audio-icon-svg">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+    </div>
+
+    <!-- Spotify-style Synced Lyrics Panel (Visible after entering memory lane) -->
+    <div class="spotify-lyrics-panel" id="lyrics-panel">
+        <div class="lyrics-toggle-tab" id="lyrics-toggle-tab">
+            <svg viewBox="0 0 24 24" id="lyrics-arrow">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+            <span>LYRICS</span>
+        </div>
+        <div class="lyrics-content">
+            <div class="lyrics-header">
+                <h3 id="lyrics-header-title">Surprise Track</h3>
+                <span class="live-tag">LIVE SYNC</span>
+            </div>
+            <div class="lyrics-scroll" id="lyrics-scroll">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Helper Mouse Indicator -->
+    <div id="scroll-helper" class="scroll-helper">
+        <span>Scroll to Explore</span>
+        <div class="scroll-mouse">
+            <div class="scroll-wheel"></div>
+        </div>
+    </div>
+
+    <!-- Decorative Overlay for Sparkles/Graphics -->
+    <div class="decorations-container" id="decorations"></div>
+
+    <!-- WebGL Canvas for 3D Scrolling Effects -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Landing / Intro Screen (Oji Holdings style: Premium clean white layout) -->
+    <div class="intro-screen" id="intro-screen">
+        <div class="intro-content-clean">
+            <!-- Brand Logo / Header -->
+            <div class="brand-logo-container">
+                <h1 class="brand-logo">TITLY</h1>
+            </div>
+            
+            <!-- Secondary brand slogan -->
+            <p class="brand-subtitle">Dedicated to Friendship</p>
+            <p class="brand-description">A walk through our shared chapters</p>
+            
+            <!-- Marquee strip of photos going from left to right -->
+            <div class="intro-marquee-container">
+                <div class="marquee-track">
+                    <!-- Photo set -->
+                    <div class="marquee-card"><img src="Photos/IMG_20260103_132952073_HDR_PORTRAIT.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG_20260103_133005969_HDR_PORTRAIT.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG_20260103_133022492_HDR_PORTRAIT.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/Lataguri ডাইরি  (25).jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20240719-WA0032.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20240719-WA0026.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20240719-WA0030.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/20230126_144216.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20220908-WA0020.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20230215-WA0026.jpg" alt="Titly"></div>
+                    
+                    <!-- Repeated to ensure smooth marquee loop -->
+                    <div class="marquee-card"><img src="Photos/IMG_20260103_132952073_HDR_PORTRAIT.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG_20260103_133005969_HDR_PORTRAIT.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG_20260103_133022492_HDR_PORTRAIT.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/Lataguri ডাইরি  (25).jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20240719-WA0032.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20240719-WA0026.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20240719-WA0030.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/20230126_144216.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20220908-WA0020.jpg" alt="Titly"></div>
+                    <div class="marquee-card"><img src="Photos/IMG-20230215-WA0026.jpg" alt="Titly"></div>
+                </div>
+            </div>
+
+            <!-- Countdown Timer to July 20th -->
+            <div class="countdown-container" id="countdown-container">
+                <div class="countdown-title" title="Secret bypass for preview (click to unlock)">Unlocks on her Birthday (July 20th)</div>
+                <div class="countdown-timer">
+                    <div class="timer-box"><span id="hours">00</span><label>Hours</label></div>
+                    <div class="timer-box"><span id="minutes">00</span><label>Mins</label></div>
+                    <div class="timer-box"><span id="seconds">00</span><label>Secs</label></div>
+                </div>
+            </div>
+
+            <!-- Proceed Button (Oji Green Style) -->
+            <button class="btn-proceed-oji" id="btn-enter">
+                <span>SCROLL TO PROCEED</span>
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
+                </svg>
+            </button>
+            
+            <!-- Preloader bars -->
+            <div class="loader-clean-container" id="loader-bar-container">
+                <div class="loader-clean-bar">
+                    <div class="loader-clean-fill" id="loader-bar"></div>
+                </div>
+                <p class="loader-clean-text" id="loader-text">Loading memories... 0%</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Container containing story cards -->
+    <div class="scroll-container" id="scroll-container">
+        
+        <!-- Section 1: Intro Text Spacer -->
+        <section class="scroll-section" id="section-1">
+            <div class="story-card" style="opacity: 1; transform: translateY(0); pointer-events: none; bottom: auto; top: 30%; left: 50%; transform: translateX(-50%); max-width: 600px; text-align: center;">
+                <span class="story-chapter">Prologue</span>
+                <h2 class="story-title">A Symphony of Memories</h2>
+                <p class="story-text">Every picture tells a story, and every memory whispers a promise of lifelong companionship. Scroll down to take a walk through our shared times...</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Chapter 1 (Custom lyrics) -->
+        <section class="scroll-section" id="section-2">
+            <div class="story-card" id="card-chapter-1">
+                <span class="story-chapter">Intro</span>
+                <h2 class="story-title">Ye meri adaa hai</h2>
+                <p class="story-text" style="font-family: var(--font-cursive); font-style: italic; font-size: 1.05rem; line-height: 1.6;">
+                    "Ye meri adaa hai,<br>
+                    Ye mera hai style,<br>
+                    Lo Surprise ho gaye ho tum!<br>
+                    Now don’t growl just smile, just smile!"
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: Chapter 2 (Custom lyrics) -->
+        <section class="scroll-section" id="section-3">
+            <div class="story-card" id="card-chapter-2">
+                <span class="story-chapter">Verse I</span>
+                <h2 class="story-title">Morning Lauki Shake</h2>
+                <p class="story-text" style="font-family: var(--font-cursive); font-style: italic; font-size: 1.05rem; line-height: 1.6;">
+                    "Many cup cakes to you,<br>
+                    All sugar less to you,<br>
+                    30 ml whisky at night,<br>
+                    Morning lauki shake to you!"
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Chapter 3 (Custom lyrics) -->
+        <section class="scroll-section" id="section-4">
+            <div class="story-card" id="card-chapter-3">
+                <span class="story-chapter">Antara</span>
+                <h2 class="story-title">Calendar Ke Saare Saal</h2>
+                <p class="story-text" style="font-family: var(--font-cursive); font-style: italic; font-size: 1.05rem; line-height: 1.6;">
+                    "Calendar ke saare saal, ho gaye kahan gum,<br>
+                    Chalte chalte kitni duur, aa pahunche hum tum...<br>
+                    Cash dekar likhwayi ye dhun,<br>
+                    So Don’t frown just smile, just smile!"
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: Chapter 4 (Custom lyrics) -->
+        <section class="scroll-section" id="section-5">
+            <div class="story-card" id="card-chapter-4">
+                <span class="story-chapter">Verse II</span>
+                <h2 class="story-title">Warm Hugs & Koochi Koo</h2>
+                <p class="story-text" style="font-family: var(--font-cursive); font-style: italic; font-size: 1.05rem; line-height: 1.6;">
+                    "Many warm hugs to you,<br>
+                    Aur thodi annoying si koochi koo...<br>
+                    Tere saare gam le lun main,<br>
+                    Aur meri saari khushi to you!"
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 6: Wishes & Glassmorphic Final Wish Card -->
+        <section class="scroll-section wish-section" id="section-6">
+            <div class="wish-bg" id="wish-bg"></div>
+            
+            <!-- Left Dancing Cat -->
+            <div class="dancing-cat-side left">
+                <div class="cat-container">
+                    <div class="cat-face">
+                        <div class="cat-ear-l"></div>
+                        <div class="cat-ear-r"></div>
+                    </div>
+                    <div class="cat-hand-l"></div>
+                    <div class="cat-hand-r"></div>
+                    <div class="cat-leg-l"></div>
+                    <div class="cat-leg-r"></div>
+                    <div class="cat-music-note"></div>
+                </div>
+            </div>
+            
+            <div class="iphone-glass-card" id="wish-card">
+                <!-- Virtual Gift Box trigger (Shown initially) -->
+                <div class="gift-box-wrapper" id="gift-box-wrapper">
+                    <div class="gift-box-container" id="gift-box-container">
+                        <div class="gift-box-lid"></div>
+                        <div class="gift-box-ribbon"></div>
+                        <div class="gift-box-body"></div>
+                    </div>
+                    <p class="gift-box-hint">Tap the gift to open her card... 🎁</p>
+                </div>
+
+                <!-- Hidden Birthday Message content (Revealed on click) -->
+                <div class="wish-revealed-content" id="wish-revealed-content" style="display: none; opacity: 0;">
+                    <!-- Avatar Frame using the Front Image -->
+                    <div class="wish-avatar-container">
+                        <img src="Photos/Lataguri ডাইরি  (32).jpg" alt="Happy Birthday Titly">
+                    </div>
+                    <h2 class="wish-header">Happy Birthday, Titly!</h2>
+                    <p class="wish-message" style="line-height: 1.8;">
+                        To my best friend, partner in crime, and the keeper of my secrets. Thank you for being the most amazing person in my life.<br>
+                        <span style="color: var(--accent-gold); font-weight: bold; font-size: 1.25rem; display: block; margin: 15px 0; font-family: var(--font-heading); text-shadow: 0 0 10px rgba(229,193,88,0.3);">
+                            H A P P Y<br>
+                            Birthday Birthday Birthday! 🎂
+                        </span>
+                        May this year bring you infinite laughter, cupcakes, and sweet adventures. Tere saare gam le lun main, aur meri saari khushi to you!
+                    </p>
+                </div>
+                
+                <div class="wish-controls" id="wish-controls" style="display: none; opacity: 0;">
+                    <button class="btn-love" id="btn-love">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        Shower Love
+                    </button>
+                    
+                    <div class="audio-widget">
+                        <div class="vinyl-disc" id="vinyl-disc"></div>
+                        <div class="audio-info">
+                            <div class="audio-track-name" id="audio-track-name">Surprise Birthday Song</div>
+                            <div class="audio-artist">Background Track</div>
+                        </div>
+                        <button class="btn-mute" id="btn-mute" title="Mute">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Dancing Cat -->
+            <div class="dancing-cat-side right">
+                <div class="cat-container">
+                    <div class="cat-face">
+                        <div class="cat-ear-l"></div>
+                        <div class="cat-ear-r"></div>
+                    </div>
+                    <div class="cat-hand-l"></div>
+                    <div class="cat-hand-r"></div>
+                    <div class="cat-leg-l"></div>
+                    <div class="cat-leg-r"></div>
+                    <div class="cat-music-note"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Load CDN Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Primary JS file -->
+    <script src="main.js"></script>
+</body>
+</html>
